@@ -4,131 +4,573 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab1__8_queens_
+namespace ПА_Лаб._1
 {
-    public class Board
+    static class Board
     {
-        public int Size { get; set; }
-        public bool [,] Map { get; set; }
+        public const int boardRows = 8;
+        public const int boardColumns = 8;
 
-        public Board()
+        public static void setBoardState(int[,] boardToFill)
         {
-            Size = 8;
-            Map = new bool[Size, Size];
-        }
+            Random ran = new Random();
+            int QueenRowInit = ran.Next(0, 7);
 
-        public Board(int _size)
-        {
-            Size = _size;
-            Map = new bool[_size, _size];
-        }
-
-        public Board(int _size, bool [,] _map)
-        {
-            Size = _size;
-            Map = _map;
-        }
-
-        public void Drawing()
-        {
-            for (int i = 0; i < this.Size; i++)
+            for (int i = 0; i < Board.boardRows; i++)
             {
-                for (int j = 0; j < this.Size; j++)
+                for (int j = 0; j < Board.boardColumns; j++)
                 {
-                    if (this.Map[i,j])
+                    if (j == QueenRowInit)
                     {
-                        Console.Write(" Q ");
+                        boardToFill[j, i] = 1;
                     }
                     else
                     {
-                        Console.Write(" . ");
+                        boardToFill[j, i] = 0;
                     }
                 }
-                Console.WriteLine();
-
-                
+                QueenRowInit = ran.Next(0, 7);
             }
         }
 
-        public int Conflicts()
-        {
-            int con = 0;
-            for (int i = 0; i < this.Size; i++)
-            {
-                for (int j = 0; j < this.Size; j++)
-                {
-                    for (int row = 0; row < this.Size; row++)
-                    {
-                        if (this.Map[i,j]&&this.Map[i,row]&&row!=j)
-                        {
-                            con++;
-                        }
-                        if (i-row>=0&&j-row>=0&&this.Map[i,j]&&this.Map[i-row,j-row]&&row!=0)
-                        {
-                            con++;
-                        }
-                        if (i-row>=0&&j+row<this.Size&&this.Map[i,j]&&this.Map[i-row,j+row]&&row!=0)
-                        {
-                            con++;
-                        }
-                        if (i+row<this.Size&&j-row>=0&&this.Map[i,j]&&this.Map[i+row,j-row]&&row!=0)
-                        {
-                            con++;
-                        }
-                        if (i + row<this.Size&&j+row<this.Size&&this.Map[i,j]&&this.Map[i+row,j+row]&&row != 0)
-                        {
-                            con++;
-                        }
-                    }
-                }
-            }
-            return (con / 2);
-        }
-        public static int Conflicts(int size, bool[,] map)
-        {
-            int con = 0;
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    for (int row = 0; row < size; row++)
-                    {
-                        if (map[i, j] && map[i, row] && row != j)
-                        {
-                            con++;
-                        }
-                        if (i - row >= 0 && j - row >= 0 && map[i, j] && map[i - row, j - row] && row != 0)
-                        {
-                            con++;
-                        }
-                        if (i - row >= 0 && j + row < size && map[i, j] && map[i - row, j + row] && row != 0)
-                        {
-                            con++;
-                        }
-                        if (i + row < size && j - row >= 0 && map[i, j] && map[i + row, j - row] && row != 0)
-                        {
-                            con++;
-                        }
-                        if (i + row < size && j + row < size && map[i, j] && map[i + row, j + row] && row != 0)
-                        {
-                            con++;
-                        }
-                    }
-                }
-            }
-            return (con / 2);
-        }
-        public void Generator()
+        public static void setManualBoardState(int[,] boardToFill)
         {
             Random ran = new Random();
-            int i = 0;
-            for (int j = 0; j < this.Size; j++)
-            {
-                i = ran.Next(0, 8);
-                this.Map[i, j] = true;
+            int boardChoice = ran.Next(0, 9);
 
+            if (boardChoice == 0)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 6 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
             }
-            return;
+
+            if (boardChoice == 1)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 3 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+
+            if (boardChoice == 2)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 1 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+
+            if (boardChoice == 3)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 1 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+
+            if (boardChoice == 4)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 6 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+
+            if (boardChoice == 5)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 2 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+            if (boardChoice == 6)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 5 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+            if (boardChoice == 7)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 0 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 1 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+            if (boardChoice == 8)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 2 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 6 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 3 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+            if (boardChoice == 9)
+            {
+                for (int i = 0; i < Board.boardRows; i++)
+                {
+                    for (int j = 0; j < Board.boardColumns; j++)
+                    {
+                        if (i == 2 && j == 0)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 2 && j == 1)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 2)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 3)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 4)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 4 && j == 5)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 0 && j == 6)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else if (i == 5 && j == 7)
+                        {
+                            boardToFill[i, j] = 1;
+                        }
+                        else
+                        {
+                            boardToFill[i, j] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static List<int[,]> getNewStates(int[,] currentState)
+        {
+            List<int[,]> newStates = new List<int[,]>();
+
+            int[] queensCoordinates = Problem.findQueensByColumns(currentState);
+
+            int arrCounter = 0;
+
+            while (arrCounter < 16)
+            {
+                int i = 1;
+                int j = 0;
+
+                while (queensCoordinates[arrCounter] + i != 8)
+                {
+                    int[,] arrToAdd = arrayCopy(currentState);
+                    arrToAdd[queensCoordinates[arrCounter], queensCoordinates[arrCounter + 1]] = 0;
+
+
+                    arrToAdd[queensCoordinates[arrCounter] + j, queensCoordinates[arrCounter + 1]] = 0;
+                    arrToAdd[queensCoordinates[arrCounter] + i, queensCoordinates[arrCounter + 1]] = 1;
+                    newStates.Add(arrToAdd);
+                    i++;
+                    j++;
+                }
+
+                int k = 1;
+                int c = 0;
+                while (queensCoordinates[arrCounter] - k > -1)
+                {
+
+                    int[,] arrToAdd = arrayCopy(currentState);
+                    arrToAdd[queensCoordinates[arrCounter], queensCoordinates[arrCounter + 1]] = 0;
+
+
+                    arrToAdd[queensCoordinates[arrCounter] - c, queensCoordinates[arrCounter + 1]] = 0;
+                    arrToAdd[queensCoordinates[arrCounter] - k, queensCoordinates[arrCounter + 1]] = 1;
+                    newStates.Add(arrToAdd);
+                    k++;
+                    c++;
+                }
+
+                arrCounter += 2;
+            }
+
+
+            return newStates;
+        }
+
+        public static void showBoard(int[,] board)
+        {
+            for (int i = 0; i < Board.boardRows; i++)
+            {
+                Console.WriteLine("\n");
+                for (int j = 0; j < Board.boardColumns; j++)
+                {
+                    Console.Write($"{board[i, j]} \t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static int[,] arrayCopy(int[,] initialArray)
+        {
+            int[,] copiedArray = new int[8, 8];
+
+            for (int i = 0; i < initialArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < initialArray.GetLength(1); j++)
+                {
+                    copiedArray[i, j] = initialArray[i, j];
+                }
+            }
+
+            return copiedArray;
         }
     }
+
 }

@@ -1,68 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Lab1__8_queens_
+namespace ПА_Лаб._1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            bool[,] queens = new bool[8, 8]
-            {
-                { false, false, true, false, false, false, false, false},
-                { false, false, false, false, false, true, false, false},
-                { false, false, false, true, false, false, false, false },
-                { true, false, false, false, false, false, false, false },
-                { false, false, false, true, false, false, false, true },
-                { false, false, false, false, true, false, false, false },
-                { false, false, false, false, false, false, true, false },
-                { false, true, false, false, false, false, false, false }
+            int[,] initialBoard = new int[Board.boardRows, Board.boardColumns];
+            Board.setManualBoardState(initialBoard);
 
+            Console.WriteLine("Initial board state: ");
+            Board.showBoard(initialBoard);
 
-            };
-            Board b = new Board(8);
-            b.Generator();
-            b.Drawing();
-            Console.WriteLine(b.Conflicts());
-            IDS ids = new IDS();
-            List<bool[,]> q = new List<bool[,]>();
-            List<bool[,]> chk = new List<bool[,]>();
-            int iterations = 0;
-            while (b.Conflicts() != 0)
+            int conflictsByState = Problem.conflictsCount(initialBoard);
+            Console.WriteLine($"Number of conflicts is {conflictsByState}.");
+            Console.WriteLine();
+
+            Tree tree = new Tree();
+            tree.root = new Node(initialBoard, null, 0);
+
+            Console.WriteLine("Recursive best first search:");
+            var result2 = SearchAlgorithms.RecursiveBestFirstSearch(tree.root, int.MaxValue);
+
+            if (result2 != null)
             {
-                b = ids.Search(b, ref q, ref chk, ref iterations);
+                Board.showBoard(result2.State);
+
+                Console.WriteLine($"\nDepth of a goal state is: {result2.Depth}.");
+                Console.WriteLine($"Generated states: {TaskCounters.generatedStatesCounterRBFS}\n" +
+                    $"Num of iterations: {TaskCounters.iterationsCounterRBFS}");
+            }
+            else
+            {
+                Console.WriteLine("Solution is not found");
             }
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Visited = " + chk.Count);
-            Console.WriteLine("Iterations = " + iterations);
-            Console.WriteLine("Memory = " + q.Count);
-            Console.ReadKey();
+            Console.WriteLine("\n\n");
 
+            Console.WriteLine("Iterative deepening search:");
+            var result = SearchAlgorithms.IterativeDeepeningSearch(tree.root);
 
-
-            Board b1 = new Board(8, queens);
-            b1.Drawing();
-            RBFS rbfs = new RBFS();
-            List<bool[,]> visited = new List<bool[,]>();
-            Queue<bool[,]> que = new Queue<bool[,]>();
-            bool[,] _second_map = new bool[b1.Size, b1.Size];
-            _second_map = Problem.Copy(b1.Size, b1.Map);
-            que.Enqueue(_second_map);
-            iterations = 0;
-            while (b1.Conflicts()!=0)
+            if (result != null)
             {
-                b1 = rbfs.Search(b1, ref que, ref chk, ref iterations);
-            }
+                Board.showBoard(result.State);
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Visited = " + visited.Count);
-            Console.WriteLine("Iterations = " + iterations);
-            Console.WriteLine("Memory = " + que.Count);
-            Console.ReadKey();
+                Console.WriteLine($"\nDepth of a goal state is: {result.Depth}.");
+                Console.WriteLine($"Generated states: {TaskCounters.generatedStatesCounterIDS}\n" +
+                    $"Num of iterations: {TaskCounters.iterationsCounterIDS}");
+            }
+            else
+            {
+                Console.WriteLine("Solution is not found");
+            }
         }
     }
-}
 
+}
